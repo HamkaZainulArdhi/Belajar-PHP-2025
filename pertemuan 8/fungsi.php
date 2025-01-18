@@ -13,5 +13,31 @@ function query($query) {
     return $rows;
 }
 
+function tambah($data) {
+  global $db;
+  
+  $id_buku = htmlspecialchars($data["id_buku"]);
+  $judulbuku = htmlspecialchars ($data["Judul_buku"]);
+  $jenisbuku = htmlspecialchars ($data["Jenis_buku"]);
+  $pengarang = htmlspecialchars ($data["pengarang"]);
+  $gambar = htmlspecialchars ($data["gambar"]);
+
+  $query = "INSERT INTO buku
+            VALUES ('$id_buku', '$judulbuku', '$jenisbuku', '$pengarang', 
+            '$gambar')
+            ";
+  mysqli_query($db, $query);
+
+  return mysqli_affected_rows($db);
+}
+
+function hapus ($judul) {
+  global $db;
+
+  mysqli_query($db, "DELETE FROM buku WHERE Judul_buku = '$judul'");
+
+  return mysqli_affected_rows($db);
+}
+
 
 ?>

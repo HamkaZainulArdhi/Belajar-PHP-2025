@@ -1,19 +1,11 @@
 <?php   
-require 'fungsi.php'; // mangil fungsi di luar file ini
+require 'fungsi.php'; // manggil fungsi di luar file ini
+// pake include bisa
 // $db = mysqli_connect("localhost", "root", "", "buku");
 
-// ambil data mahasiswa
+// ambil data mbuku
 $buku = query ("SELECT * FROM Buku");
 
-// ambil data fetch buku
-// mysqli_fetch_row() = mengembalikan array numerik
-// mysqli_fetch_assoc() = mengembalikan array asosiatif
-// mysqli_fetch_array() = mengembalikan array asosiatif dan numerik tapi double
-// mysqli_fetch_objeck() = varibel -> nama kolom
-
-// while ($buku = mysqli_fetch_assoc($result)) {
-//       var_dump($buku["Jenis_buku"]);
-// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +16,9 @@ $buku = query ("SELECT * FROM Buku");
 </head>
 <body>
   <h1>Tabel Buku</h1>
+
+  <a href="tambah.php">tambah data mahasiswa</a>
+  <br><br>
   <table border="1" cellpadding="10">
     <tr>
       <th>ID</th>
@@ -38,10 +33,11 @@ $buku = query ("SELECT * FROM Buku");
     <tr>
       <td><?= $row["id_buku"]; ?></td>
       <td>
-        <a href="">Ubah</a> |
-        <a href="">hapus</a>
+        <a href="ubah.php?Judul_buku=<?= $row["Judul_buku"]?>">Ubah</a> |
+        <a href="hapus.php?Judul_buku=<?= $row["Judul_buku"]; ?>"
+        onclick="return confirm ('yaqin ?'); ">hapus</a>
       </td>
-      <td><img src="img/1.png" alt="" width="50"></td>
+      <td><img src="img/<?= $row["gambar"]; ?>" alt="" width="50"></td>
       <td><?= $row["Judul_buku"]; ?></td>
       <td><?= $row["Jenis_buku"]; ?></td>
       <td><?= $row["pengarang"]; ?></td>
