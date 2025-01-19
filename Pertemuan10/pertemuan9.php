@@ -6,6 +6,11 @@ require 'fungsi.php'; // manggil fungsi di luar file ini
 // ambil data mbuku
 $buku = query ("SELECT * FROM Buku");
 
+// tombol cari
+if (isset ($_POST["cari"])) {
+  $buku = cari($_POST["keyword"]); 
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,10 +26,11 @@ $buku = query ("SELECT * FROM Buku");
   <br><br>
 
   <form action="" method="post">
-    <input type="text" name="keyword" size="30px" autofocus>
+    <input type="text" name="keyword" size="30px" autofocus autocomplete="off" placeholder="Cari Data">
     <button type="submit" name="cari">Cari</button>
   </form>
   <br>
+
   <table border="1" cellpadding="10">
     <tr>
       <th>ID</th>
