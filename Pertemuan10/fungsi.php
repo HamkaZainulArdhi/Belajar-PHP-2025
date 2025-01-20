@@ -20,7 +20,11 @@ function tambah($data) {
   $judulbuku = htmlspecialchars ($data["Judul_buku"]);
   $jenisbuku = htmlspecialchars ($data["Jenis_buku"]);
   $pengarang = htmlspecialchars ($data["pengarang"]);
-  $gambar = htmlspecialchars ($data["gambar"]);
+  // upload gambar
+  $gambar = upload();
+  if (!$gambar) {
+    return false;
+  }
 
   $query = "INSERT INTO buku
             VALUES ('$id_buku', '$judulbuku', '$jenisbuku', '$pengarang', 
@@ -31,6 +35,47 @@ function tambah($data) {
   return mysqli_affected_rows($db);
 }
 
+function upload (){
+  
+  $namafile = $_FILES['gambar']['name'];
+  $ukuranfile = $_FILES['gambar']['size'];
+  $error = $_FILES['gambar']['error'];
+  $tmpname = $_FILES['gambar']['tmp_name'];
+
+  // cek apakah tidak ada gambar yg di up
+  if ($error === 4) {
+      echo "<script>alert ('Pilih gambar terlebih dahulu')</script>";
+  return false;
+  }
+
+  // yg boleh di up hnya gambar
+  $ektensigambarvalid = ['jpg', 'jpeg', 'png'];
+  $ektensigambar = explode('.', $namafile);
+  $ektensigambar =  strtolower(end($ektensigambar));
+
+  if (!in_array($ektensigambar, $ektensigambarvalid)){
+     echo "<script>alert ('bukan gambar')</script>";
+  return false;
+  }
+
+  if ($ukuranfile > 1000000){
+     echo "<script>alert ('gambar gede bngt')</script>";
+  return false;
+  }
+
+  // lolos pemgecekan, siap di up
+  // generate nama baru biar g ada yg sama
+  $namafilebaru = uniqid();
+  $namafilebaru .= '.';
+  $namafilebaru .= $ektensigambar;
+
+  move_uploaded_file($tmpname, 'img/' . $namafilebaru);
+
+  return $namafilebaru;
+
+
+}
+
 function hapus ($judul) {
   global $db;
 
@@ -38,6 +83,7 @@ function hapus ($judul) {
 
   return mysqli_affected_rows($db);
 }
+
 
 function ubah($data) {
   global $db;
@@ -47,7 +93,17 @@ function ubah($data) {
   $judulbuku = htmlspecialchars ($data["Judul_buku"]);
   $jenisbuku = htmlspecialchars ($data["Jenis_buku"]);
   $pengarang = htmlspecialchars ($data["pengarang"]);
-  $gambar = htmlspecialchars ($data["gambar"]);
+  $gambarlama = ($data["gambarl"]);
+
+  // cek apakah user milih gambar lagi nga
+  if ($_FILES['gambar']['error'] === 4) {
+    $gambar = $gambarlama;
+  } else {
+    $gambar = upload();
+  }
+  
+
+  
 
   $query = "UPDATE buku SET
              id_buku = '$id_buku',

@@ -5,33 +5,20 @@ require 'fungsi.php';
 if (isset($_POST["submit"])) {
   
 
-  // ambil data dari tiap elemen form
-  // $id_buku = $_POST["id_buku"];
-  // $judulbuku = $_POST["Judul_buku"];
-  // $jenisbuku = $_POST["Jenis_buku"];
-  // $pengarang = $_POST["pengarang"];
-  // $gambar = $_POST["gambar"];
-
-  // query insert data
-  // $query = "INSERT INTO buku
-  //           VALUES ('$id_buku', '$judulbuku', '$jenisbuku', '$pengarang', 
-  //           '$gambar')
-  //           ";
-  // mysqli_query($conn, $query);
 
   // cek keberhasilan apakah data berhasil di tambahkan
  if( tambah($_POST) > 0) {
   echo "
   <script>
     alert ('Data berhasil di tambahkan');
-    document.location.href = 'pertemuan8.php';
+    document.location.href = 'pertemuan9.php';
   </script>
   ";
  } else {
   echo "
   <script>
-    alert ('Data berhasil di tambahkan');
-    document.location.href = 'pertemuan8.php';
+    alert ('Data TIDAK berhasil di tambahkan');
+    document.location.href = 'pertemuan9.php';
   </script>
   ";
  }
@@ -50,7 +37,7 @@ if (isset($_POST["submit"])) {
 <body>
   <h1>Tambah data mahasiswa</h1>
 
-  <form action="" method="post">
+  <form action="" method="post" enctype="multipart/form-data">
     <ul>
       <li>
         <input type="number" name="id_buku" placeholder="Id Buku" require>
@@ -65,7 +52,7 @@ if (isset($_POST["submit"])) {
         <input type="text" name="pengarang" placeholder="Nama Pengarang">
       </li>
       <li>
-        <input type="text" name="gambar" placeholder="Gambar">
+        <input type="file" name="gambar" placeholder="Gambar">
       </li>
       <li>
         <button type="submit" name="submit">kirim</button>
