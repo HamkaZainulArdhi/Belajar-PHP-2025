@@ -1,0 +1,5 @@
+sesiaon adalah mekasisme penyimpanan informasi
+kedalam variabel agar bisa di gunakan di lebih satu halaman
+informasi maka akan di disimpan di server
+
+

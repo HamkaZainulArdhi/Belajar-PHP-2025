@@ -5,7 +5,7 @@ if(isset($_POST["submit"])) {
 // cek usernaem dan pasword
   if($_POST["nama"] == "admin" && $_POST["Password"] == "12345") {
 // jika benar redirect ke halaman admin
-      header("Location: pertemuan6.login.php");
+      header("Location: pertemuan8.login.php");
       exit;
 } else {
 // jika salah tampilkan pesan salah
@@ -13,6 +13,7 @@ if(isset($_POST["submit"])) {
       }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
