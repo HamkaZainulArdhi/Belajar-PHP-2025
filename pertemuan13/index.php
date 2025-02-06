@@ -1,0 +1,97 @@
+<?php   
+
+session_start();
+
+if (!isset($_SESSION["masuk"])) { // cek user apakah user sudah login blom
+  header("Location: login.php");
+  exit;
+}
+
+require 'fungsi.php'; // manggil fungsi di luar file ini
+// pake include bisa
+// $db = mysqli_connect("localhost", "root", "", "buku");
+
+// Pagination configuration
+$jumlahDataPerHalaman = 5;
+$hasil = count(query("SELECT * FROM Buku"));
+$jumlahhalaman = ceil($hasil / $jumlahDataPerHalaman);
+$halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+$awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
+
+
+
+// ambil data mbuku
+$buku = query ("SELECT * FROM Buku LIMIT $awalData, $jumlahDataPerHalaman");
+
+// tombol cari
+if (isset ($_POST["cari"])) {
+  $buku = cari($_POST["keyword"]); 
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Tabel Buku</h1>
+
+  <a href="tambah.php">tambah data mahasiswa</a>
+  <br><br>
+
+  <form action="" method="post">
+    <input type="text" name="keyword" size="30px" autofocus autocomplete="off" placeholder="Cari Data">
+    <button type="submit" name="cari">Cari</button>
+  </form>
+
+<!-- pagination navigasi -->
+ <?php if ($halamanAktif > 1) : ?>
+  <a href="?halaman=<?= $halamanAktif - 1; ?>">&laquo;;</a>
+<?php endif; ?>
+
+
+ <?php for ($i = 1; $i <= $jumlahhalaman; $i++) : ?>
+    <?php if ($i == $halamanAktif) : ?>
+      <a href="?halaman=<?= $i; ?>" style="font-weight: bold; color: red;"><?= $i; ?></a> 
+    <?php else : ?>
+      <a href="?halaman=<?= $i; ?>"><?= $i; ?></a>
+    <?php endif; ?>
+  <?php endfor; ?>
+
+   <?php if ($halamanAktif < $jumlahhalaman) : ?>
+  <a href="?halaman=<?= $halamanAktif + 1; ?>">&raquo;;</a>
+<?php endif; ?>
+  <br>
+
+  <table border="1" cellpadding="10">
+    <tr>
+      <th>ID</th>
+      <th>Aksi</th>
+      <th>Gambar</th>
+      <th>Judul</th>
+      <th>Jenis Buku</th>
+      <th>Pengarang</th>
+    </tr>
+
+    <?php foreach($buku as $row) : ?>
+    <tr>
+      <td><?= $row["id_buku"]; ?></td>
+      <td>
+        <a href="ubah.php?Judul_buku=<?= $row["Judul_buku"]?>">Ubah</a> |
+        <a href="hapus.php?Judul_buku=<?= $row["Judul_buku"]; ?>"
+        onclick="return confirm ('yaqin ?'); ">hapus</a>
+      </td>
+      <td><img src="img/<?= $row["gambar"]; ?>" alt="" width="50"></td>
+      <td><?= $row["Judul_buku"]; ?></td>
+      <td><?= $row["Jenis_buku"]; ?></td>
+      <td><?= $row["pengarang"]; ?></td>
+    </tr>
+  <?php endforeach; ?>
+  </table>
+
+  <a href="logout.php" style="border: solid 3px;">logout</a>
+</body>
+</html>
